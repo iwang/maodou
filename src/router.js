@@ -2,8 +2,6 @@ import React from 'react'
 import {Router} from 'dva/router'
 import App from './routes/app'
 
-import Products from "./routes/product.js";
-
 const cached = {}
 const registerModel = (app, model) => {
   if (!cached[model.namespace]) {
@@ -11,7 +9,8 @@ const registerModel = (app, model) => {
     cached[model.namespace] = 1
   }
 }
-
+//https://github.com/ReactTraining/react-router/blob/master/docs/guides/DynamicRouting.md
+//https://github.com/ReactTraining/react-router/blob/master/docs/API.md#getcomponentsnextstate-callback
 export default function ({history, app}) {
   const routes = [
     {
@@ -65,6 +64,15 @@ export default function ({history, app}) {
             require.ensure([], require => {
               cb(null, require('./routes/product'))
             }, 'product-add')
+          }
+        }, {
+          path: 'vendor',
+          name: 'vendor',
+          getComponent (nextState, cb) {
+            require.ensure([], require => {
+              registerModel(app, require('./models/vendor'))
+              cb(null, require('./routes/vendor'))
+            }, 'vendors')
           }
         }, {
           path: '*',

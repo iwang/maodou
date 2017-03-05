@@ -30,7 +30,7 @@ function Header ({user, logout, switchSider, siderFold, isNavbar, menuPopoverVis
         </div>}
       <Menu className={styles.topNav} mode="horizontal">
         <Menu.Item key="product-create"><Link to="/product">Create Product</Link></Menu.Item>
-        <Menu.Item key="Nav2"><Link to="/undefined">Nav2</Link></Menu.Item>
+        <Menu.Item key="vendor-create"><Link to="/vendor">Create Vendor</Link></Menu.Item>
       </Menu>
       <Menu className='header-menu' mode='horizontal' onClick={handleClickMenu}>
         <SubMenu style={{
