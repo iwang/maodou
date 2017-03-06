@@ -62,8 +62,9 @@ export default function ({history, app}) {
           name: 'product',
           getComponent (nextState, cb) {
             require.ensure([], require => {
+              registerModel(app, require('./models/product'))
               cb(null, require('./routes/product'))
-            }, 'product-add')
+            }, 'products')
           }
         }, {
           path: 'vendor',

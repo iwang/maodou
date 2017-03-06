@@ -3,9 +3,14 @@ import { connect } from 'dva';
 import styles from './product.css';
 import { Form, Input, Tooltip, Icon, Cascader, Select, Row, Col, Checkbox, Button } from 'antd';
 const FormItem = Form.Item;
-const Option = Select.Option;
 
-function Product() {
+function Product({
+  dispatch,
+  form: {
+    getFieldDecorator,
+    validateFieldsAndScroll
+  }
+}) {
   const formItemLayout = {
     labelCol: { span: 6 },
     wrapperCol: { span: 14 },
@@ -18,16 +23,48 @@ function Product() {
     },
   };
 
+  function handleSubmit(e) {
+    e.preventDefault();
+    validateFieldsAndScroll((error, values) => {
+      if (!error) {
+        dispatch({
+          type: 'products/create',
+          payload: values
+        });
+      }
+    })
+  }
+
   return (
-    <Form>
+    <Form onSubmit={handleSubmit}>
       <FormItem  {...formItemLayout} label='Product Name'>
-        <Input />
+        {getFieldDecorator('name', {
+          initialValue: 'productA',
+          rules: [{
+            required: true, message: 'Please input Product Name'
+          }],
+        })(
+          <Input />
+        )}
       </FormItem>
       <FormItem {...formItemLayout} label='SPU'>
-        <Input />
+        {
+          getFieldDecorator('spu', {
+            initialValue: 'A378944',
+            rules: [{
+              required: true, message: 'Please input SPU Name'
+            }],
+          })(
+            <Input />
+          )
+        }
       </FormItem>
       <FormItem {...formItemLayout} label='Description'>
-        <Input type='textarea' />
+        {
+          getFieldDecorator('desc', {})(
+            <Input type='textarea' />
+          )
+        }
       </FormItem>
       <FormItem {...tailFormItemLayout}>
         <Button type="primary" htmlType="submit" size="large">Submit</Button>
@@ -40,4 +77,4 @@ function mapStateToProps() {
   return {};
 }
 
-export default connect(mapStateToProps)(Product);
+export default connect(mapStateToProps)(Form.create()(Product));

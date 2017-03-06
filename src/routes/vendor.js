@@ -1,9 +1,7 @@
 import React from 'react';
 import { connect } from 'dva';
-import styles from './product.css';
 import { Form, Input, Tooltip, Icon, Cascader, Select, Row, Col, Checkbox, Button } from 'antd';
 const FormItem = Form.Item;
-const Option = Select.Option;
 
 function Vendor({
   dispatch,

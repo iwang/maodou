@@ -29,7 +29,7 @@ export default {
       payload
     }, {call, put}) {
       yield put({type: 'showLoginButtonLoading'})
-      const data = yield call(login, parse(payload))
+      const data = yield call(login, payload)
       if (data.success) {
         yield put({
           type: 'loginSuccess',
