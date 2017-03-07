@@ -31,6 +31,7 @@ function Header ({user, logout, switchSider, siderFold, isNavbar, menuPopoverVis
       <Menu className={styles.topNav} mode="horizontal">
         <Menu.Item key="product-create"><Link to="/product">Create Product</Link></Menu.Item>
         <Menu.Item key="vendor-create"><Link to="/vendor">Create Vendor</Link></Menu.Item>
+        <Menu.Item key="order-create"><Link to="/order">Create order</Link></Menu.Item>
       </Menu>
       <Menu className='header-menu' mode='horizontal' onClick={handleClickMenu}>
         <SubMenu style={{

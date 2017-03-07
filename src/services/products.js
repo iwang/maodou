@@ -6,3 +6,11 @@ export async function create (params) {
     data: params
   })
 }
+
+
+export async function query (params) {
+  return request('/api/products', {
+    method: 'get',
+    data: params
+  })
+}

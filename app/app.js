@@ -46,6 +46,22 @@ const insertOne = (doc_name, modelFn) => wrap(function* (req, res) {
 app.post('/api/vendor', insertOne('vendor', vendorModelFn));
 app.post('/api/product', insertOne('product', productModelFn))
 
+app.get('/api/products', wrap(function* (req, res) {
+  try {
+    var db = yield MongoClient.connect(db_url);
+    let r = yield db.collection('product').find().toArray()
+    res.setHeader("Access-Control-Allow-Origin", "*")
+    res.send(JSON.stringify({
+      success: true,
+      payload: r
+    }))
+  } catch (e) {
+    console.log(e.stack);
+    res.status( 400 ).send( e );
+  } finally {
+    db.close();
+  }
+}))
 
 app.listen(3000, function () {
   console.log('Example app listening on port 3000!')

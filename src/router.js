@@ -75,7 +75,16 @@ export default function ({history, app}) {
               cb(null, require('./routes/vendor'))
             }, 'vendors')
           }
-        }, {
+        },{
+          path: 'order',
+          name: 'order',
+          getComponent (nextState, cb) {
+            require.ensure([], require => {
+              registerModel(app, require('./models/order'))
+              cb(null, require('./routes/order'))
+            }, 'order')
+          }
+        },{
           path: '*',
           name: 'error',
           getComponent (nextState, cb) {
