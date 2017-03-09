@@ -1,10 +1,12 @@
 import {create} from '../services/orders'
 import {query as productsQuery} from '../services/products'
+import {query as vendorsQuery} from '../services/vendors'
 
 export default {
   namespace: 'orders',
   state: {
-    products: []
+    products: [],
+    vendors: []
   },
   reducers: {
     productsQuerySuccess(state, action) {
@@ -12,6 +14,13 @@ export default {
       return {
         ...state,
         products: list
+      }
+    },
+    vendorsQuerySuccess(state, action) {
+      const {list} = action.payload
+      return {
+        ...state,
+        vendors: list
       }
     }
   },
@@ -21,7 +30,11 @@ export default {
         if (location.pathname === '/order') {
           dispatch({
             type: 'productsQuery',
-            payload: location.query
+            payload: {}
+          })
+          dispatch({
+            type: 'vendorsQuery',
+            payload: {}
           })
         }
       })
@@ -33,6 +46,17 @@ export default {
       if (data.success) {
         yield put({
           type: 'productsQuerySuccess',
+          payload: {
+            list: data.payload
+          }
+        })
+      }
+    },
+    *vendorsQuery({payload}, {call, put}) {
+      const data = yield call(vendorsQuery, payload);
+      if (data.success) {
+        yield put({
+          type: 'vendorsQuerySuccess',
           payload: {
             list: data.payload
           }

@@ -24,7 +24,7 @@ function Order({
     },
   };
 
-  console.log(orders)
+  const {products, vendors} = orders
 
   function handleSubmit(e) {
     e.preventDefault();
@@ -38,25 +38,66 @@ function Order({
     })
   }
 
-  function handleChange(e) {
-    e.preventDefault();
+  function productChange(value) {
+    console.log(value)
   }
-
-  const options = <Option key='aa'>Full</Option>
 
   return (
     <Form onSubmit={handleSubmit}>
       <FormItem  {...formItemLayout} label='Choose Product'>
         <Select
             combobox
-            notFoundContent=""
+            optionLabelProp="children"
+            placeholder="Select Product"
             defaultActiveFirstOption={false}
             showArrow={true}
             filterOption={false}
-            onChange={handleChange}
+            onChange={productChange}
             >
-          {options}
+          {products.map(p => <Option key={p._id} >{p.name}</Option>)}
         </Select>
+      </FormItem>
+
+      <FormItem  {...formItemLayout} label='Choose Vendor'>
+        <Select
+            combobox
+            optionLabelProp="children"
+            placeholder="Select Product"
+            defaultActiveFirstOption={false}
+            showArrow={true}
+            filterOption={false}
+            onChange={productChange}
+            >
+          {vendors.map(p => <Option key={p._id} >{p.name}</Option>)}
+        </Select>
+      </FormItem>
+
+      <FormItem {...formItemLayout} label='Purchase Price'>
+        {
+          getFieldDecorator('purchase_price', {
+            rules: [{
+              required: true, message: 'Please input purchase price',
+            }, {
+              pattern: /^[\d\.]+$/, message: 'Please input valid price'
+            }]
+          })(
+            <Input />
+          )
+        }
+      </FormItem>
+
+      <FormItem {...formItemLayout} label='Selling Price'>
+        {
+          getFieldDecorator('selling_price', { 
+            rules: [{
+              required: true, message: 'Please input selling price',
+            }, {
+              pattern: /^[\d\.]+$/, message: 'Please input valid price'
+            }]
+          })(
+            <Input />
+          )
+        }
       </FormItem>
 
       <FormItem {...tailFormItemLayout}>
@@ -75,4 +116,4 @@ Order.propTypes = {
   dispatch: PropTypes.func
 }
 
-export default connect(mapStateToProps)(Form.create()(Order));
+export default connect(({orders})=>({orders}))(Form.create()(Order));

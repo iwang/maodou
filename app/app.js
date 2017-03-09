@@ -41,15 +41,12 @@ const insertOne = (doc_name, modelFn) => wrap(function* (req, res) {
   } finally {
     db.close();
   }
-});
+})
 
-app.post('/api/vendor', insertOne('vendor', vendorModelFn));
-app.post('/api/product', insertOne('product', productModelFn))
-
-app.get('/api/products', wrap(function* (req, res) {
+const find = (doc_name, filter) => wrap(function* (req, res) {
   try {
     var db = yield MongoClient.connect(db_url);
-    let r = yield db.collection('product').find().toArray()
+    let r = yield db.collection(doc_name).find().toArray()
     res.setHeader("Access-Control-Allow-Origin", "*")
     res.send(JSON.stringify({
       success: true,
@@ -61,7 +58,13 @@ app.get('/api/products', wrap(function* (req, res) {
   } finally {
     db.close();
   }
-}))
+})
+
+app.post('/api/vendor', insertOne('vendor', vendorModelFn));
+app.post('/api/product', insertOne('product', productModelFn))
+
+app.get('/api/products', find('product', {}))
+app.get('/api/vendors', find('vendor', {}))
 
 app.listen(3000, function () {
   console.log('Example app listening on port 3000!')
